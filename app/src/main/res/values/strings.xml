@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">NFC</string>
+    <string name="nfc_info">nfc info</string>
+</resources>
