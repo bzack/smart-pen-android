@@ -14,6 +14,7 @@ import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 
 public class NfcActivity extends AppCompatActivity {
@@ -51,7 +52,7 @@ public class NfcActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        PendingIntent pendingIntent  = PendingIntent.getActivity(this, 0, new Intent(
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, new Intent(
                 this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
 
         // Notice that this is the same filter as in our manifest.
@@ -62,9 +63,9 @@ public class NfcActivity extends AppCompatActivity {
             Log.d(TAG, "wrong MIME type");
             throw new RuntimeException("Check your mime type.");
         }
-        IntentFilter[] intentFiltersArray = new IntentFilter[] { ndef, };
-        String[][] techListsArray = new String[][] { new String[] { NfcF.class.getName() } };
-        nfcAdapter.enableForegroundDispatch(this, pendingIntent , intentFiltersArray, techListsArray);
+        IntentFilter[] intentFiltersArray = new IntentFilter[]{ndef,};
+        String[][] techListsArray = new String[][]{new String[]{NfcF.class.getName()}};
+        nfcAdapter.enableForegroundDispatch(this, pendingIntent, intentFiltersArray, techListsArray);
     }
 
     @Override
@@ -91,34 +92,35 @@ public class NfcActivity extends AppCompatActivity {
 
     private void handleIntent(Intent intent) {
         if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(intent.getAction())) {
-            String nfcText = "";
-
             Parcelable[] rawMessages = intent
                     .getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
             if (rawMessages != null) {
-                // Process the messages array.
-                try {
-                    for (int i = 0; i < rawMessages.length; i++) {
-                        NdefRecord[] recs = ((NdefMessage) rawMessages[i]).getRecords();
-                        for (int j = 0; j < recs.length; j++) {
-                            if (recs[j].getTnf() == NdefRecord.TNF_WELL_KNOWN &&
-                                    Arrays.equals(recs[j].getType(), NdefRecord.RTD_TEXT)) {
-                                byte[] payload = recs[j].getPayload();
-                                String textEncoding = ((payload[0] & 0200) == 0) ? "UTF-8" : "UTF-16";
-                                int langCodeLen = payload[0] & 0077;
-
-                                nfcText = ("\n\nNdefMessage[" + i + "], NdefRecord[" + j + "]:\n\"" +
-                                        new String(payload, langCodeLen + 1, payload.length - langCodeLen - 1,
-                                                textEncoding) + "\"");
-                            }
-                        }
-                    }
-                }catch (Exception e) {
-                    Log.d(TAG, "wrong text encode");
+                // Process the first message, first recode only.
+                NdefRecord record = ((NdefMessage) rawMessages[0]).getRecords()[0];
+                // expect plain text
+                if (record.getTnf() == NdefRecord.TNF_WELL_KNOWN &&
+                        Arrays.equals(record.getType(), NdefRecord.RTD_TEXT)) {
+                    byte[] payload = record.getPayload();
+                    textViewInfo.setText(getText(payload));
+                } else {
+                    Log.d(TAG, "NFC recode is not plain text");
                 }
-
             }
-            textViewInfo.setText(nfcText);
         }
+    }
+
+    private String getText(byte[] payload) {
+        String nfcText = "";
+
+        String textEncoding = ((payload[0] & 128) == 0) ? "UTF-8" : "UTF-16";
+        int langCodeLen = payload[0] & 63;
+
+        try {
+            nfcText = new String(payload, langCodeLen + 1, payload.length - langCodeLen - 1, textEncoding);
+        } catch (UnsupportedEncodingException e) {
+            Log.d(TAG, "text encoding error");
+        }
+
+        return nfcText;
     }
 }
