@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 /**
  * Created by zhangdx14 on 6/18/2017.
@@ -50,7 +51,7 @@ public class NfcFragment extends Fragment {
         TextView textViewNote = (TextView) view.findViewById(R.id.note);
 
         if (hPen != null) {
-            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh.mm");
+            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh.mm", Locale.US);
             textViewId.setText(hPen.getId());
             if (hPen.getExpDate() != null) {
                 textViewExpDate.setText(sdf.format(hPen.getExpDate()));
