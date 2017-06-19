@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">NFC</string>
-    <string name="nfc_info">nfc info</string>
+    <string name="hpen_id">Hpen ID</string>
+    <string name="hpen_exp_date">Hpen exp date</string>
+    <string name="hpen_inj_date">Hpen inj date</string>
+    <string name="hpen_note">Hpen note</string>
 </resources>

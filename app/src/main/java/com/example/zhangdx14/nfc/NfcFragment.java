@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+
 /**
  * Created by zhangdx14 on 6/18/2017.
  */
@@ -42,12 +44,21 @@ public class NfcFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        TextView textViewInfo = (TextView) view.findViewById(R.id.info);
-        if (hPen == null) {
-            textViewInfo.setText("");
-        } else {
-            textViewInfo.setText(hPen.getId());
-            // todo: set other view objects
+        TextView textViewId = (TextView) view.findViewById(R.id.id);
+        TextView textViewExpDate = (TextView) view.findViewById(R.id.exp_date);
+        TextView textViewInjDate = (TextView) view.findViewById(R.id.inj_date);
+        TextView textViewNote = (TextView) view.findViewById(R.id.note);
+
+        if (hPen != null) {
+            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh.mm");
+            textViewId.setText(hPen.getId());
+            if (hPen.getExpDate() != null) {
+                textViewExpDate.setText(sdf.format(hPen.getExpDate()));
+            }
+            if (hPen.getInjDate() != null) {
+                textViewInjDate.setText(sdf.format(hPen.getInjDate()));
+            }
+            textViewNote.setText(hPen.getNote());
         }
     }
 }
