@@ -25,3 +25,5 @@ for (int i = 0; i < rawMessages.length; i++) {
         }
     }
 }
+
+https://guides.codepath.com/android/Creating-and-Using-Fragments

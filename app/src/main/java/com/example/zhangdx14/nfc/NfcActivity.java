@@ -9,9 +9,10 @@ import android.nfc.NfcAdapter;
 import android.nfc.tech.NfcF;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.UnsupportedEncodingException;
@@ -20,29 +21,38 @@ import java.util.Arrays;
 public class NfcActivity extends AppCompatActivity {
     private static final String TAG = "NfcActivity";
 
+    private String hpenId;      // id for current Hpen
+
     private NfcAdapter nfcAdapter;
-    private TextView textViewInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_nfc);
+        setContentView(R.layout.activity_fragment);
 
-        textViewInfo = (TextView) findViewById(R.id.info);
+        FragmentManager fm = getSupportFragmentManager();
+        Fragment fragment = fm.findFragmentById(R.id.fragment_container);
+
+        if (fragment == null) {
+            fragment = NfcFragment.newInstance(hpenId);
+            fm.beginTransaction().add(R.id.fragment_container, fragment).commit();
+        }
 
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
         if (nfcAdapter == null) {
             Toast.makeText(this,
-                    "NFC NOT supported on this devices!",
+                    "NFC NOT supported on this device!",
                     Toast.LENGTH_LONG).show();
             finish();
             return;
         }
 
         if (!nfcAdapter.isEnabled()) {
-            textViewInfo.setText("NFC is disabled.");
-        } else {
-            textViewInfo.setText(R.string.nfc_info);
+            Toast.makeText(this,
+                    "NFC NOT turned on!",
+                    Toast.LENGTH_LONG).show();
+            finish();
+            return;
         }
 
         handleIntent(getIntent());
@@ -78,22 +88,20 @@ public class NfcActivity extends AppCompatActivity {
     protected void onNewIntent(Intent intent) {
         /**
          * This method gets called, when a new Intent gets associated with the current activity instance.
-         * Instead of creating a new activity, onNewIntent will be called. For more information have a look
-         * at the documentation.
-         *
+         * Instead of creating a new activity, onNewIntent will be called.
          * In our case this method gets called, when the user attaches a Tag to the device.
          */
-
-        // onResume gets called after this to handle the intent
         super.onNewIntent(intent);
 
         handleIntent(intent);
     }
 
     private void handleIntent(Intent intent) {
+        /**
+         * process NFC intent
+         */
         if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(intent.getAction())) {
-            Parcelable[] rawMessages = intent
-                    .getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
+            Parcelable[] rawMessages = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
             if (rawMessages != null) {
                 // Process the first message, first recode only.
                 NdefRecord record = ((NdefMessage) rawMessages[0]).getRecords()[0];
@@ -101,7 +109,11 @@ public class NfcActivity extends AppCompatActivity {
                 if (record.getTnf() == NdefRecord.TNF_WELL_KNOWN &&
                         Arrays.equals(record.getType(), NdefRecord.RTD_TEXT)) {
                     byte[] payload = record.getPayload();
-                    textViewInfo.setText(getText(payload));
+                    hpenId = getText(payload);      // set current Hpen id
+                    // replace fragment
+                    FragmentManager fm = getSupportFragmentManager();
+                    Fragment fragment = NfcFragment.newInstance(hpenId);
+                    fm.beginTransaction().replace(R.id.fragment_container, fragment).commit();
                 } else {
                     Log.d(TAG, "NFC recode is not plain text");
                 }
