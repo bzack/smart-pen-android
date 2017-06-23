@@ -25,13 +25,7 @@ public class HpenBox {
     private HpenBox(Context context) {
         hpens = new ArrayList<>();
         // hardcode
-        Hpen hpen = new Hpen("abbv1234");
-        hpen.setExpDate(new Date(1507766400L * 1000));      // 10/12/2017 @ 12:00am (UTC)
-        hpen.setInjDate(new Date(1497514320L * 1000));      // 06/15/2017 @ 8:12am (UTC)
-        hpen.setStatus("Red");
-        hpen.setNote("Already injected");
-        hpens.add(hpen);
-        hpen = new Hpen("abbv1356");
+        Hpen hpen = new Hpen("abbv1356");
         hpen.setExpDate(new Date(1507766400L * 1000));      // 10/12/2017 @ 12:00am (UTC)
         hpens.add(hpen);        // green
         hpen = new Hpen("abbv1104");
