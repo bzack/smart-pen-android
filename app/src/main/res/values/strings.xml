@@ -1,7 +1,14 @@
 <resources>
-    <string name="app_name">NFC</string>
+    <string name="app_name">Smart Humira Pen</string>
     <string name="hpen_id">Hpen ID</string>
     <string name="hpen_exp_date">Hpen exp date</string>
     <string name="hpen_inj_date">Hpen inj date</string>
     <string name="hpen_note">Hpen note</string>
+    <string name="home">Home</string>
+    <string name="status">Pen Status</string>
+    <string name="label">Shipping Label</string>
+    <string name="upload_title">Upload Data</string>
+    <string name="upload_button">Upload Data</string>
+    <string name="status_button">READY FOR USE</string>
+    <string name="days_button">5 DAYS REMAINING</string>
 </resources>

@@ -27,3 +27,8 @@ for (int i = 0; i < rawMessages.length; i++) {
 }
 
 https://guides.codepath.com/android/Creating-and-Using-Fragments
+
+https://dzhang69@bitbucket.org/dzhang69/nfc.git
+
+git remote -v
+git remote set-url origin https://github.com/bzack/smart-pen-android.git
