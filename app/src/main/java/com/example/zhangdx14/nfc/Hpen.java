@@ -23,7 +23,7 @@ public class Hpen {
         injDate = null;
         daysSinceRoomTemp = 0;
         status = "Green";
-        note = "ok";
+        note = "OK";
     }
 
     public String getId() {

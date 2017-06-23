@@ -31,16 +31,16 @@ public class HpenBox {
         hpen.setStatus("Red");
         hpen.setNote("Already injected");
         hpens.add(hpen);
-        hpen = new Hpen("abbv3456");
+        hpen = new Hpen("abbv1356");
         hpen.setExpDate(new Date(1507766400L * 1000));      // 10/12/2017 @ 12:00am (UTC)
-        hpens.add(hpen);
-        hpen = new Hpen("abbv5678");
+        hpens.add(hpen);        // green
+        hpen = new Hpen("abbv1104");
         hpen.setExpDate(new Date(1507766400L * 1000));      // 10/12/2017 @ 12:00am (UTC)
         hpen.setDaysSinceRoomTemp(5);
         hpen.setStatus("Yellow");
         hpen.setNote("5 days since room temperature");
         hpens.add(hpen);
-        hpen = new Hpen("abbvie7890");
+        hpen = new Hpen("abbv0928");
         hpen.setExpDate(new Date(1507766400L * 1000));      // 10/12/2017 @ 12:00am (UTC)
         hpen.setDaysSinceRoomTemp(15);
         hpen.setStatus("Red");
