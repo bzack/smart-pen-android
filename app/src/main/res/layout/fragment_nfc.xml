@@ -2,30 +2,51 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center_horizontal"
     android:layout_margin="16dp">
 
     <TextView
         android:id="@+id/id"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="32dp"
+        android:padding="24dp"
         android:text="@string/hpen_id"/>
 
-    <TextView
-        android:id="@+id/exp_date"
-        android:layout_width="match_parent"
+    <ImageView
+        android:id="@+id/status_img"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hpen_exp_date"/>
-
-    <TextView
-        android:id="@+id/inj_date"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/hpen_inj_date"/>
+        android:src="@drawable/green"/>
 
     <TextView
         android:id="@+id/note"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:padding="24dp"
+        android:textSize="15dp"
         android:text="@string/hpen_note"/>
+
+    <Button
+        android:id="@+id/status"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/button_green"
+        android:text="@string/status_button" />
+
+    <Button
+        android:id="@+id/days"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp"
+        android:background="@drawable/button_green"
+        android:text="@string/days_button" />
+
+    <Button
+        android:id="@+id/upload"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/upload_button" />
 
 </LinearLayout>
